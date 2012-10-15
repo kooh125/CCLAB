@@ -1,0 +1,3 @@
+I’m excited to make a something with LED but I’m still confused about it.
+I didn’t know where to put the wires correctly that I burnt two of the bulbs.
+Also, I don’t know if my calculations for voltage, resistance, and current is right.

@@ -1,0 +1,63 @@
+
+
+int ledPinA = 12;
+int ledPinB = 13;
+int ledPinC = 9;
+int brightness = 0; 
+int fadeAmount = 5;
+void setup()
+{
+pinMode(ledPinA, OUTPUT);
+pinMode(ledPinB, OUTPUT);
+pinMode(ledPinC, OUTPUT);
+}
+void loop()
+{
+  analogWrite(ledPinC, brightness);    
+
+  brightness = brightness + fadeAmount;
+
+  if (brightness == 0 || brightness == 255) {
+    fadeAmount = -fadeAmount ; 
+  }     
+  
+  
+  digitalWrite(ledPinC, HIGH);
+  delay(2000);
+
+  digitalWrite(ledPinA, HIGH);
+  digitalWrite(ledPinB, HIGH);
+  digitalWrite(ledPinC, HIGH);
+  delay(100);
+  
+    
+  digitalWrite(ledPinC, HIGH);
+  delay(300);
+  
+
+  digitalWrite(ledPinA, LOW);
+  digitalWrite(ledPinB, LOW);
+  digitalWrite(ledPinC, LOW);
+  delay(100);
+
+  digitalWrite(ledPinC, HIGH);
+  delay(2000);
+
+  digitalWrite(ledPinA, HIGH);
+  digitalWrite(ledPinB, HIGH);
+  digitalWrite(ledPinC, HIGH);
+  delay(100);
+  
+  digitalWrite(ledPinC, HIGH);
+  delay(2000);
+  
+  
+  digitalWrite(ledPinA, LOW);
+  digitalWrite(ledPinB, LOW);
+  digitalWrite(ledPinC, LOW);
+  delay(100);
+  
+  digitalWrite(ledPinC, HIGH);
+  delay(100);
+}
+

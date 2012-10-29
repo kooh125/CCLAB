@@ -1,0 +1,12 @@
+int sensorPin = 0; //select Pin
+int val = 0;
+
+void setup(){
+  Serial.begin(9600); //Serial port
+}
+
+void loop(){
+  val=analogRead(sensorPin)/4; //sensor
+  Serial.print(val,99); //Serial port variable
+  delay(100); //stand by 100 millisecond
+}

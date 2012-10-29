@@ -1,0 +1,62 @@
+import processing.serial.*;
+
+Serial port; //serial class
+float val;  //serial port
+float angle;
+float radius;
+
+//font start
+PFont myFont;
+int fontPosX = 160;
+int fontPosY = 50;
+int numberFontX = 170;
+int numberFontY = 70;
+
+
+
+void setup() {
+  size(500, 500);
+  background(222, 222, 222);
+  frameRate(30);
+  smooth();
+  String arduinoPort = Serial.list()[0]; //arduino port
+  port = new Serial(this,arduinoPort,9600);
+}
+
+void draw() {
+  if (port.available() > 0) {
+    val = port.read();
+    radius = map(val,0,255,70, height*0.75);
+  }
+  
+  int middleX = width/2;
+  int middleY = height/2;
+  float x= middleX + cos(angle) * height/2;
+  float y=middleY + sin(angle)  * height/2;
+  stroke(222,222,222);
+  line(middleX, middleY, x,y);
+  
+  x= middleX + cos(angle)*radius;
+  y= middleY + sin(angle)*radius;
+  stroke(156,191,209);
+  line(middleX, middleY,x,y);
+  
+  angle +=0.01;
+
+  PFont numberFont = createFont( "Helvetica", 30, true );
+  fill(106,152,175);
+  text("Realtime Data Visualization", numberFontX, numberFontY);
+
+  // debugging to check where mouse button click position is.
+  if( mousePressed && (mouseButton == LEFT) ) {
+  println( "mouseX position: " + mouseX + " and mouseY position: " + mouseY);
+    }
+   
+
+
+}
+
+void mousePressed()
+{
+     background(222, 222, 222);
+}

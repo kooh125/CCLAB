@@ -1,0 +1,48 @@
+#include "bouncingBall.h"
+
+//--------------------------------------------------------------
+void bouncingBall::setup(){
+	ofBackground(255);
+	ofSetFrameRate(30);
+	
+	bBall.ballX = ofRandomWidth();
+	bBall.ballY = ofRandomHeight();
+	bBall.speedX = ofRandom(-10,10);
+	bBall.speedY = ofRandom(-10,10);
+	
+	bBall.redColor = 240;
+	bBall.greenColor = 128;
+	bBall.blueColor = 128;
+}
+
+//--------------------------------------------------------------
+void bouncingBall::update(){
+	bBall.ballX = bBall.ballX + bBall.speedX;
+	bBall.ballY = bBall.ballY + bBall.speedY;
+    
+	if ( bBall.ballX < 5 || bBall.ballX > ofGetWidth()-5 ) {
+		bBall.speedX = -bBall.speedX;
+		bBall.redColor = ofRandom(0,255);
+		bBall.greenColor = ofRandom(0,255);
+		bBall.blueColor = ofRandom(0,255);
+	}
+	if ( bBall.ballY < 5 || bBall.ballY > ofGetHeight()-5 ) {
+		bBall.speedY = -bBall.speedY;
+		bBall.redColor = ofRandom(0,255);
+		bBall.greenColor = ofRandom(0,255);
+		bBall.blueColor = ofRandom(0,255);
+	}
+}
+
+
+//--------------------------------------------------------------
+void bouncingBall::draw(){
+	ofBackground(255);
+	ofSetColor(bBall.redColor, bBall.greenColor, bBall.blueColor);
+	ofEllipse(bBall.ballX, bBall.ballY, 20, 20);
+}
+
+//--------------------------------------------------------------
+void bouncingBall::mousePressed(int x, int y, int button){
+	ofBackground(0);
+}

@@ -1,0 +1,186 @@
+#include "testApp.h"
+
+
+//--------------------------------------------------------------
+void testApp::setup(){
+	capture = false;
+	bFill	= true;
+}
+
+//--------------------------------------------------------------
+void testApp::update(){
+	ofBackground(26, 77, 100);
+}
+
+//--------------------------------------------------------------
+void testApp::draw(){
+    
+	//we don't want to capture every frame
+	//so we only capture one frame when capture
+	//is set to true
+	if(capture){
+		output.beginEPS("test.ps");
+	}
+    
+	//do we want filled shapes or outlines?
+	if(bFill)output.fill();
+	else output.noFill();
+    
+	//--------------------
+	//--------------------
+	//--------------------
+	// advanced shapes
+	// these shapes can have an unlmited number of vertices
+	// -----------------------------------
+	// k - curve shape based on mouse position
+	// -----------------------------------
+
+	
+	
+	
+	//bus
+	output.setColor(255, 255, 253);
+	output.disableCenterRect();
+	output.rect(75, 150, 300, 200);
+	
+	output.setColor(255, 255, 253);
+	output.disableCenterRect();
+	output.rect(330, 250, 100, 100);
+	
+
+	//blue
+	output.setColor(26, 77, 100);
+	output.disableCenterRect();
+	output.rect(135, 180, 60, 60);
+	
+	output.setColor(26, 77, 100);
+	output.disableCenterRect();
+	output.rect(260, 180, 60, 60);
+	
+    
+	//output.setColor(0xb8b8b8);
+    //displayCurveShape(50.0, 0.0, 340, 400);
+
+	
+
+	
+    //output.setColor(ofRandom(255), ofRandom(255), ofRandom(255));
+    //displayCurveShape(30.0, 20.0, 300, 100);
+    
+	//curve
+    output.setColor(ofRandom(255), ofRandom(255), ofRandom(255));
+    displayCurveShape(40, 25, 330, 350);
+	
+	output.setColor(ofRandom(255), ofRandom(255), ofRandom(255));
+    displayCurveShape(40, 25, 170, 350);
+    
+    //-
+	output.setColor(255, 255, 253);
+    displayCurveShape(10, 10, 50, 440);
+	
+	output.setColor(255, 255, 253);
+    displayCurveShape(10, 10, 200, 100);
+	
+	output.setColor(255, 255, 253);
+    displayCurveShape(10, 10, 100, 300);
+	
+	output.setColor(255, 255, 253);
+    displayCurveShape(10, 10, 250, 400);
+	
+	output.setColor(255, 255, 253);
+    displayCurveShape(10, 10, 380, 50);
+	
+	output.setColor(255, 255, 253);
+    displayCurveShape(10, 10, 350, 250);
+	
+	output.setColor(255, 255, 253);
+    displayCurveShape(10, 10, 400, 420);
+	
+	
+	//----------------------------
+	//----------------------------
+	//----------------------------
+	// Bonuse :)
+	// Mouse draw - with curved line
+	//
+    
+	if( pts.size() > 0 ){
+        
+		int numPts = pts.size();
+		output.setColor(0x0088EE);
+		output.noFill();
+		output.beginShape();
+        
+		//catmull curves create nice smooth curves between points
+		//so actually a lower resolution creates a smoother line
+		//and reduce the number of poiints in our eps file.
+		int rescaleRes = 6;
+        
+		for(int i = 0; i < numPts; i++){
+            
+			//we need to draw the first and last point
+			//twice for a catmull curve
+			if(i == 0 || i == numPts -1){
+				output.curveVertex(pts[i].x, pts[i].y);
+			}
+            
+			if(i % rescaleRes == 0) output.curveVertex(pts[i].x, pts[i].y);
+		}
+        
+		output.endShape();
+	}    
+}
+//--------------------------------------------------------------
+void testApp::keyPressed(int key){
+	if(key =='f'){
+		bFill = !bFill;
+	}else if(key =='a'){
+        output.setColor(ofRandom(255), ofRandom(255), ofRandom(255));
+		displayCurveShape(ofRandom(100), ofRandom(0, 100), ofRandom(100, 400), ofRandom(100, 400));
+	}
+}
+
+//--------------------------------------------------------------
+void testApp::mouseDragged(int x, int y, int button){
+    
+	//we add a new point to our line
+	pts.push_back(ofPoint());
+	int last = pts.size()-1;
+    
+	pts[last].x = x;
+	pts[last].y = y;
+    
+}
+
+//--------------------------------------------------------------
+void testApp::mousePressed(int x, int y, int button){
+	pts.clear();
+    
+	//lets store the first point of the line
+	pts.push_back(ofPoint());
+	pts[0].x = x;
+	pts[0].y = y;
+}
+
+//--------------------------------------------------------------
+void testApp::displayCurveShape(float radius, float angle, float centerX, float centerY){
+	output.beginShape();
+	//set number of sides based on mouse position
+    int numSteps = ( (float)mouseX / ofGetWidth() )* 12.0;
+    
+    //make sure we don't go bellow 3 sides
+    numSteps = MAX(3, numSteps);
+    
+    float step		= TWO_PI / (numSteps);
+    
+    //we need 3 extra points to get a complete curve shape
+    for(int i = 0; i < numSteps + 3; i++){
+        float rx = centerX + cos(angle) * radius;
+        float ry = centerY + sin(angle) * radius;
+        
+        output.curveVertex(rx, ry);
+        angle += step;
+    }
+    
+	output.endShape(true);
+}

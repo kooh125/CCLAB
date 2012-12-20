@@ -1,0 +1,1475 @@
+// importing the audio player library
+import ddf.minim.*;
+import ddf.minim.signals.*;
+import ddf.minim.analysis.*;
+import ddf.minim.effects.*;
+
+final int NUM_OF_CHORDS = 17;
+final int NUM_OF_CUTS = 100;
+
+Minim[] minims = new Minim[ NUM_OF_CHORDS ];
+Animation[] animation = new Animation[ NUM_OF_CUTS ];
+Chord[] chords = new Chord[ NUM_OF_CHORDS ];
+
+void setup()
+{
+    size(621, 580);
+    PImage startImage = loadImage( "0.png" );
+    image( startImage, 0, 0 );
+    
+    for( int i = 0; i < NUM_OF_CHORDS; i++ )
+    {
+        minims[i] = new Minim(this);
+    }
+    
+    initializeChords();
+    initializeAnimation();
+}
+
+void draw()
+{
+    if( mousePressed && mouseX >= 188 && mouseX <= 436 && mouseY >= 159 && mouseY <= 225 )
+    {
+        PImage secondImage = loadImage( animation[0].getImageName() );
+        image( secondImage, 0, 0 );
+    }
+}
+
+void mousePressed()
+{
+    if( animation[0].isSelected == true )
+    {
+        Chord relatedChord = animation[0].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[1].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[0].getChordData().getChord().play();
+            animation[0].isSelected = false;
+        }
+        animation[0].getChordData().getChord().rewind();
+    }
+    else if( animation[1].isSelected == true )
+    {
+        Chord relatedChord = animation[1].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[2].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[1].getChordData().getChord().play();
+            animation[1].isSelected = false;
+        }
+        animation[1].getChordData().getChord().rewind();
+    }
+    else if( animation[2].isSelected == true )
+    {
+        Chord relatedChord = animation[2].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[3].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[2].getChordData().getChord().play();
+            animation[2].isSelected = false;
+        } 
+        animation[2].getChordData().getChord().rewind();
+    }
+    else if( animation[3].isSelected == true )
+    {
+        Chord relatedChord = animation[3].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[4].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[3].getChordData().getChord().play();
+            animation[3].isSelected = false;
+        } 
+        animation[3].getChordData().getChord().rewind();
+    }
+    else if( animation[4].isSelected == true )
+    {
+        Chord relatedChord = animation[4].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[5].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[4].getChordData().getChord().play();
+            animation[4].isSelected = false;
+        } 
+        animation[4].getChordData().getChord().rewind();
+    }
+    else if( animation[5].isSelected == true )
+    {
+        Chord relatedChord = animation[5].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[6].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[5].getChordData().getChord().play();
+            animation[5].isSelected = false;
+        } 
+        animation[5].getChordData().getChord().rewind();
+    }
+    else if( animation[6].isSelected == true )
+    {
+        Chord relatedChord = animation[6].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[7].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[6].getChordData().getChord().play();
+            animation[6].isSelected = false;
+        } 
+        animation[6].getChordData().getChord().rewind();
+    }
+    else if( animation[7].isSelected == true )
+    {
+        Chord relatedChord = animation[7].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[8].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[7].getChordData().getChord().play();
+            animation[7].isSelected = false;
+        } 
+        animation[7].getChordData().getChord().rewind();
+    }
+    else if( animation[8].isSelected == true )
+    {
+        Chord relatedChord = animation[8].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[9].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[8].getChordData().getChord().play();
+            animation[8].isSelected = false;
+        } 
+        animation[8].getChordData().getChord().rewind();
+    }
+    else if( animation[9].isSelected == true )
+    {
+        Chord relatedChord = animation[9].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[10].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[9].getChordData().getChord().play();
+            animation[9].isSelected = false;
+        } 
+        animation[9].getChordData().getChord().rewind();
+    }
+    else if( animation[10].isSelected == true )
+    {
+        Chord relatedChord = animation[10].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[11].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[10].getChordData().getChord().play();
+            animation[10].isSelected = false;
+        } 
+        animation[10].getChordData().getChord().rewind();
+    }
+    else if( animation[11].isSelected == true )
+    {
+        Chord relatedChord = animation[11].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[12].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[11].getChordData().getChord().play();
+            animation[11].isSelected = false;
+        }
+        animation[11].getChordData().getChord().rewind();
+    }
+    else if( animation[12].isSelected == true )
+    {
+        Chord relatedChord = animation[12].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[13].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[12].getChordData().getChord().play();
+            animation[12].isSelected = false;
+        } 
+        animation[12].getChordData().getChord().rewind();
+    }
+    else if( animation[13].isSelected == true )
+    {
+        Chord relatedChord = animation[13].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[14].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[13].getChordData().getChord().play();
+            animation[13].isSelected = false;
+        } 
+        animation[13].getChordData().getChord().rewind();
+    }
+    else if( animation[14].isSelected == true )
+    {
+        Chord relatedChord = animation[14].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[15].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[14].getChordData().getChord().play();
+            animation[14].isSelected = false;
+        } 
+        animation[14].getChordData().getChord().rewind();
+    }
+    else if( animation[15].isSelected == true )
+    {
+        Chord relatedChord = animation[15].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[16].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[15].getChordData().getChord().play();
+            animation[15].isSelected = false;
+        } 
+        animation[15].getChordData().getChord().rewind();
+    }
+    else if( animation[16].isSelected == true )
+    {
+        Chord relatedChord = animation[16].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[17].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[16].getChordData().getChord().play();
+            animation[16].isSelected = false;
+        } 
+        animation[16].getChordData().getChord().rewind();
+    }
+    else if( animation[17].isSelected == true )
+    {
+        Chord relatedChord = animation[17].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[18].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[17].getChordData().getChord().play();
+            animation[17].isSelected = false;
+        } 
+        animation[17].getChordData().getChord().rewind();
+    }
+    else if( animation[18].isSelected == true )
+    {
+        Chord relatedChord = animation[18].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[19].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[18].getChordData().getChord().play();
+            animation[18].isSelected = false;
+        } 
+        animation[18].getChordData().getChord().rewind();
+    }
+    else if( animation[19].isSelected == true )
+    {
+        Chord relatedChord = animation[19].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[20].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[19].getChordData().getChord().play();
+            animation[19].isSelected = false;
+        } 
+        animation[19].getChordData().getChord().rewind();
+    }
+    else if( animation[20].isSelected == true )
+    {
+        Chord relatedChord = animation[20].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[21].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[20].getChordData().getChord().play();
+            animation[20].isSelected = false;
+        } 
+        animation[20].getChordData().getChord().rewind();
+    }
+    else if( animation[21].isSelected == true )
+    {
+        Chord relatedChord = animation[21].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[22].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[21].getChordData().getChord().play();
+            animation[21].isSelected = false;
+        } 
+        animation[21].getChordData().getChord().rewind();
+    }
+    else if( animation[22].isSelected == true )
+    {
+        Chord relatedChord = animation[22].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[23].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[22].getChordData().getChord().play();
+            animation[22].isSelected = false;
+        } 
+        animation[22].getChordData().getChord().rewind();
+    }
+    else if( animation[23].isSelected == true )
+    {
+        Chord relatedChord = animation[23].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[24].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[23].getChordData().getChord().play();
+            animation[23].isSelected = false;
+        } 
+        animation[23].getChordData().getChord().rewind();
+    }
+    else if( animation[24].isSelected == true )
+    {
+        Chord relatedChord = animation[24].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[25].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[24].getChordData().getChord().play();
+            animation[24].isSelected = false;
+        } 
+        animation[24].getChordData().getChord().rewind();
+    }
+    else if( animation[25].isSelected == true )
+    {
+        Chord relatedChord = animation[25].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[26].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[25].getChordData().getChord().play();
+            animation[25].isSelected = false;
+        } 
+        animation[25].getChordData().getChord().rewind();
+    }
+    else if( animation[26].isSelected == true )
+    {
+        Chord relatedChord = animation[26].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[27].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[26].getChordData().getChord().play();
+            animation[26].isSelected = false;
+        } 
+        animation[26].getChordData().getChord().rewind();
+    }
+    else if( animation[27].isSelected == true )
+    {
+        Chord relatedChord = animation[27].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[28].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[27].getChordData().getChord().play();
+            animation[27].isSelected = false;
+        } 
+        animation[27].getChordData().getChord().rewind();
+    }
+    else if( animation[28].isSelected == true )
+    {
+        Chord relatedChord = animation[28].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[29].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[28].getChordData().getChord().play();
+            animation[28].isSelected = false;
+        } 
+        animation[28].getChordData().getChord().rewind();
+    }
+    else if( animation[29].isSelected == true )
+    {
+        Chord relatedChord = animation[29].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[30].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[29].getChordData().getChord().play();
+            animation[29].isSelected = false;
+        } 
+        animation[29].getChordData().getChord().rewind();
+    }
+    else if( animation[30].isSelected == true )
+    {
+        Chord relatedChord = animation[30].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[31].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[30].getChordData().getChord().play();
+            animation[30].isSelected = false;
+        } 
+        animation[30].getChordData().getChord().rewind();
+    }
+    else if( animation[31].isSelected == true )
+    {
+        Chord relatedChord = animation[31].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[32].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[31].getChordData().getChord().play();
+            animation[31].isSelected = false;
+        } 
+        animation[31].getChordData().getChord().rewind();
+    }
+    else if( animation[32].isSelected == true )
+    {
+        Chord relatedChord = animation[32].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[33].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[32].getChordData().getChord().play();
+            animation[32].isSelected = false;
+        } 
+        animation[32].getChordData().getChord().rewind();
+    }
+    else if( animation[33].isSelected == true )
+    {
+        Chord relatedChord = animation[33].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[34].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[33].getChordData().getChord().play();
+            animation[33].isSelected = false;
+        } 
+        animation[33].getChordData().getChord().rewind();
+    }
+    else if( animation[34].isSelected == true )
+    {
+        Chord relatedChord = animation[34].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[35].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[34].getChordData().getChord().play();
+            animation[34].isSelected = false;
+        } 
+        animation[34].getChordData().getChord().rewind();
+    }
+    else if( animation[35].isSelected == true )
+    {
+        Chord relatedChord = animation[35].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[36].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[35].getChordData().getChord().play();
+            animation[35].isSelected = false;
+        } 
+        animation[35].getChordData().getChord().rewind();
+    }
+    else if( animation[36].isSelected == true )
+    {
+        Chord relatedChord = animation[36].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[37].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[36].getChordData().getChord().play();
+            animation[36].isSelected = false;
+        } 
+        animation[36].getChordData().getChord().rewind();
+    }
+    else if( animation[37].isSelected == true )
+    {
+        Chord relatedChord = animation[37].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[38].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[37].getChordData().getChord().play();
+            animation[37].isSelected = false;
+        } 
+        animation[37].getChordData().getChord().rewind();
+    }
+    else if( animation[38].isSelected == true )
+    {
+        Chord relatedChord = animation[38].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[39].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[38].getChordData().getChord().play();
+            animation[38].isSelected = false;
+        } 
+        animation[38].getChordData().getChord().rewind();
+    }
+    else if( animation[39].isSelected == true )
+    {
+        Chord relatedChord = animation[39].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[40].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[39].getChordData().getChord().play();
+            animation[39].isSelected = false;
+        } 
+        animation[39].getChordData().getChord().rewind();
+    }
+    else if( animation[40].isSelected == true )
+    {
+        Chord relatedChord = animation[40].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[41].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[40].getChordData().getChord().play();
+            animation[40].isSelected = false;
+        } 
+        animation[40].getChordData().getChord().rewind();
+    }
+    else if( animation[41].isSelected == true )
+    {
+        Chord relatedChord = animation[41].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[42].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[41].getChordData().getChord().play();
+            animation[41].isSelected = false;
+        } 
+        animation[41].getChordData().getChord().rewind();
+    }
+    else if( animation[42].isSelected == true )
+    {
+        Chord relatedChord = animation[42].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[43].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[42].getChordData().getChord().play();
+            animation[42].isSelected = false;
+        } 
+        animation[42].getChordData().getChord().rewind();
+    }
+    else if( animation[43].isSelected == true )
+    {
+        Chord relatedChord = animation[43].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[44].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[43].getChordData().getChord().play();
+            animation[43].isSelected = false;
+        } 
+        animation[43].getChordData().getChord().rewind();
+    }
+    else if( animation[44].isSelected == true )
+    {
+        Chord relatedChord = animation[44].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[45].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[44].getChordData().getChord().play();
+            animation[44].isSelected = false;
+        } 
+        animation[44].getChordData().getChord().rewind();
+    }
+    else if( animation[45].isSelected == true )
+    {
+        Chord relatedChord = animation[45].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[46].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[45].getChordData().getChord().play();
+            animation[45].isSelected = false;
+        } 
+        animation[45].getChordData().getChord().rewind();
+    }
+    else if( animation[46].isSelected == true )
+    {
+        Chord relatedChord = animation[46].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[47].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[46].getChordData().getChord().play();
+            animation[46].isSelected = false;
+        } 
+        animation[46].getChordData().getChord().rewind();
+    }
+    else if( animation[47].isSelected == true )
+    {
+        Chord relatedChord = animation[47].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[48].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[47].getChordData().getChord().play();
+            animation[47].isSelected = false;
+        } 
+        animation[47].getChordData().getChord().rewind();
+    }
+    else if( animation[48].isSelected == true )
+    {
+        Chord relatedChord = animation[48].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[49].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[48].getChordData().getChord().play();
+            animation[48].isSelected = false;
+        }
+        animation[48].getChordData().getChord().rewind();
+    }
+    else if( animation[49].isSelected == true )
+    {
+        Chord relatedChord = animation[49].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[50].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[49].getChordData().getChord().play();
+            animation[49].isSelected = false;
+        } 
+        animation[49].getChordData().getChord().rewind();
+    }
+    else if( animation[50].isSelected == true )
+    {
+        Chord relatedChord = animation[50].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[51].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[50].getChordData().getChord().play();
+            animation[50].isSelected = false;
+        } 
+        animation[50].getChordData().getChord().rewind();
+    }
+    else if( animation[51].isSelected == true )
+    {
+        Chord relatedChord = animation[51].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[52].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[51].getChordData().getChord().play();
+            animation[51].isSelected = false;
+        }
+        animation[51].getChordData().getChord().rewind();
+    }
+    else if( animation[52].isSelected == true )
+    {
+        Chord relatedChord = animation[52].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[53].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[52].getChordData().getChord().play();
+            animation[52].isSelected = false;
+        }
+        animation[52].getChordData().getChord().rewind();
+    }
+    else if( animation[53].isSelected == true )
+    {
+        Chord relatedChord = animation[53].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[54].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[53].getChordData().getChord().play();
+            animation[53].isSelected = false;
+        } 
+        animation[53].getChordData().getChord().rewind();
+    }
+    else if( animation[54].isSelected == true )
+    {
+        Chord relatedChord = animation[54].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[55].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[54].getChordData().getChord().play();
+            animation[54].isSelected = false;
+        } 
+        animation[54].getChordData().getChord().rewind();
+    }
+    else if( animation[55].isSelected == true )
+    {
+        Chord relatedChord = animation[55].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[56].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[55].getChordData().getChord().play();
+            animation[55].isSelected = false;
+        } 
+        animation[55].getChordData().getChord().rewind();
+    }
+    else if( animation[56].isSelected == true )
+    {
+        Chord relatedChord = animation[56].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[57].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[56].getChordData().getChord().play();
+            animation[56].isSelected = false;
+        } 
+        animation[56].getChordData().getChord().rewind();
+    }
+    else if( animation[57].isSelected == true )
+    {
+        Chord relatedChord = animation[57].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[58].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[57].getChordData().getChord().play();
+            animation[57].isSelected = false;
+        } 
+        animation[57].getChordData().getChord().rewind();
+    }
+    else if( animation[58].isSelected == true )
+    {
+        Chord relatedChord = animation[58].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[59].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[58].getChordData().getChord().play();
+            animation[58].isSelected = false;
+        } 
+        animation[58].getChordData().getChord().rewind();
+    }
+    else if( animation[59].isSelected == true )
+    {
+        Chord relatedChord = animation[59].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[60].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[59].getChordData().getChord().play();
+            animation[59].isSelected = false;
+        } 
+        animation[59].getChordData().getChord().rewind();
+    }
+    else if( animation[60].isSelected == true )
+    {
+        Chord relatedChord = animation[60].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[61].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[60].getChordData().getChord().play();
+            animation[60].isSelected = false;
+        } 
+        animation[60].getChordData().getChord().rewind();
+    }
+    else if( animation[61].isSelected == true )
+    {
+        Chord relatedChord = animation[61].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[62].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[61].getChordData().getChord().play();
+            animation[61].isSelected = false;
+        } 
+        animation[61].getChordData().getChord().rewind();
+    }
+    else if( animation[62].isSelected == true )
+    {
+        Chord relatedChord = animation[62].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[63].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[62].getChordData().getChord().play();
+            animation[62].isSelected = false;
+        }
+        animation[62].getChordData().getChord().rewind();
+    }
+    else if( animation[63].isSelected == true )
+    {
+        Chord relatedChord = animation[63].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[64].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[63].getChordData().getChord().play();
+            animation[63].isSelected = false;
+        } 
+        animation[63].getChordData().getChord().rewind();
+    }
+    else if( animation[64].isSelected == true )
+    {
+        Chord relatedChord = animation[64].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[65].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[64].getChordData().getChord().play();
+            animation[64].isSelected = false;
+        } 
+        animation[64].getChordData().getChord().rewind();
+    }
+    else if( animation[65].isSelected == true )
+    {
+        Chord relatedChord = animation[65].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[65].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[65].getChordData().getChord().play();
+            animation[65].isSelected = false;
+        } 
+        animation[65].getChordData().getChord().rewind();
+    }
+    else if( animation[66].isSelected == true )
+    {
+        Chord relatedChord = animation[66].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[67].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[66].getChordData().getChord().play();
+            animation[66].isSelected = false;
+        } 
+        animation[66].getChordData().getChord().rewind();
+    }
+    else if( animation[67].isSelected == true )
+    {
+        Chord relatedChord = animation[67].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[68].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[67].getChordData().getChord().play();
+            animation[67].isSelected = false;
+        } 
+        animation[67].getChordData().getChord().rewind();
+    }
+    else if( animation[68].isSelected == true )
+    {
+        Chord relatedChord = animation[68].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[69].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[68].getChordData().getChord().play();
+            animation[68].isSelected = false;
+        } 
+        animation[68].getChordData().getChord().rewind();
+    }
+    else if( animation[69].isSelected == true )
+    {
+        Chord relatedChord = animation[69].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[70].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[69].getChordData().getChord().play();
+            animation[69].isSelected = false;
+        } 
+        animation[69].getChordData().getChord().rewind();
+    }
+    else if( animation[70].isSelected == true )
+    {
+        Chord relatedChord = animation[70].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[71].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[70].getChordData().getChord().play();
+            animation[70].isSelected = false;
+        } 
+        animation[70].getChordData().getChord().rewind();
+    }
+    else if( animation[71].isSelected == true )
+    {
+        Chord relatedChord = animation[71].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[72].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[71].getChordData().getChord().play();
+            animation[71].isSelected = false;
+        } 
+        animation[71].getChordData().getChord().rewind();
+    }
+    else if( animation[72].isSelected == true )
+    {
+        Chord relatedChord = animation[72].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[73].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[72].getChordData().getChord().play();
+            animation[72].isSelected = false;
+        } 
+        animation[72].getChordData().getChord().rewind();
+    }
+    else if( animation[73].isSelected == true )
+    {
+        Chord relatedChord = animation[73].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[74].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[73].getChordData().getChord().play();
+            animation[73].isSelected = false;
+        } 
+        animation[73].getChordData().getChord().rewind();
+    }
+    else if( animation[74].isSelected == true )
+    {
+        Chord relatedChord = animation[74].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[75].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[74].getChordData().getChord().play();
+            animation[74].isSelected = false;
+        } 
+        animation[74].getChordData().getChord().rewind();
+    }
+    else if( animation[75].isSelected == true )
+    {
+        Chord relatedChord = animation[75].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[76].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[75].getChordData().getChord().play();
+            animation[75].isSelected = false;
+        } 
+        animation[75].getChordData().getChord().rewind();
+    }
+    else if( animation[76].isSelected == true )
+    {
+        Chord relatedChord = animation[76].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[77].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[76].getChordData().getChord().play();
+            animation[76].isSelected = false;
+        } 
+        animation[76].getChordData().getChord().rewind();
+    }
+    else if( animation[77].isSelected == true )
+    {
+        Chord relatedChord = animation[77].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[78].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[77].getChordData().getChord().play();
+            animation[77].isSelected = false;
+        } 
+        animation[77].getChordData().getChord().rewind();
+    }
+    else if( animation[78].isSelected == true )
+    {
+        Chord relatedChord = animation[78].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[79].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[78].getChordData().getChord().play();
+            animation[78].isSelected = false;
+        } 
+        animation[78].getChordData().getChord().rewind();
+    }
+    else if( animation[79].isSelected == true )
+    {
+        Chord relatedChord = animation[79].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[80].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[79].getChordData().getChord().play();
+            animation[79].isSelected = false;
+        } 
+        animation[79].getChordData().getChord().rewind();
+    }
+    else if( animation[80].isSelected == true )
+    {
+        Chord relatedChord = animation[80].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[81].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[80].getChordData().getChord().play();
+            animation[80].isSelected = false;
+        } 
+        animation[80].getChordData().getChord().rewind();
+    }
+    else if( animation[81].isSelected == true )
+    {
+        Chord relatedChord = animation[81].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[82].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[81].getChordData().getChord().play();
+            animation[81].isSelected = false;
+        } 
+        animation[81].getChordData().getChord().rewind();
+    }
+    else if( animation[82].isSelected == true )
+    {
+        Chord relatedChord = animation[82].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[83].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[82].getChordData().getChord().play();
+            animation[82].isSelected = false;
+        } 
+        animation[82].getChordData().getChord().rewind();
+    }
+    else if( animation[83].isSelected == true )
+    {
+        Chord relatedChord = animation[83].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[84].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[83].getChordData().getChord().play();
+            animation[83].isSelected = false;
+        } 
+        animation[83].getChordData().getChord().rewind();
+    }
+    else if( animation[84].isSelected == true )
+    {
+        Chord relatedChord = animation[84].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[85].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[84].getChordData().getChord().play();
+            animation[84].isSelected = false;
+        } 
+        animation[84].getChordData().getChord().rewind();
+    }
+    else if( animation[85].isSelected == true )
+    {
+        Chord relatedChord = animation[85].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[86].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[85].getChordData().getChord().play();
+            animation[85].isSelected = false;
+        } 
+        animation[85].getChordData().getChord().rewind();
+    }
+    else if( animation[86].isSelected == true )
+    {
+        Chord relatedChord = animation[86].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[87].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[86].getChordData().getChord().play();
+            animation[86].isSelected = false;
+        } 
+        animation[86].getChordData().getChord().rewind();
+    }
+    else if( animation[87].isSelected == true )
+    {
+        Chord relatedChord = animation[87].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[88].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[87].getChordData().getChord().play();
+            animation[87].isSelected = false;
+        } 
+        animation[87].getChordData().getChord().rewind();
+    }
+    else if( animation[88].isSelected == true )
+    {
+        Chord relatedChord = animation[88].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[89].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[88].getChordData().getChord().play();
+            animation[88].isSelected = false;
+        } 
+        animation[88].getChordData().getChord().rewind();
+    }
+    else if( animation[89].isSelected == true )
+    {
+        Chord relatedChord = animation[89].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[90].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[89].getChordData().getChord().play();
+            animation[89].isSelected = false;
+        } 
+        animation[89].getChordData().getChord().rewind();
+    }
+    else if( animation[90].isSelected == true )
+    {
+        Chord relatedChord = animation[90].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[91].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[90].getChordData().getChord().play();
+            animation[90].isSelected = false;
+        } 
+        animation[90].getChordData().getChord().rewind();
+    }
+    else if( animation[91].isSelected == true )
+    {
+        Chord relatedChord = animation[91].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[92].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[91].getChordData().getChord().play();
+            animation[91].isSelected = false;
+        } 
+        animation[91].getChordData().getChord().rewind();
+    }
+    else if( animation[92].isSelected == true )
+    {
+        Chord relatedChord = animation[92].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[93].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[92].getChordData().getChord().play();
+            animation[92].isSelected = false;
+        } 
+        animation[92].getChordData().getChord().rewind();
+    }
+    else if( animation[93].isSelected == true )
+    {
+        Chord relatedChord = animation[93].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[94].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[93].getChordData().getChord().play();
+            animation[93].isSelected = false;
+        } 
+        animation[93].getChordData().getChord().rewind();
+    }
+    else if( animation[94].isSelected == true )
+    {
+        Chord relatedChord = animation[94].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[95].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[94].getChordData().getChord().play();
+            animation[94].isSelected = false;
+        } 
+        animation[94].getChordData().getChord().rewind();
+    }
+    else if( animation[95].isSelected == true )
+    {
+        Chord relatedChord = animation[95].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[96].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[95].getChordData().getChord().play();
+            animation[95].isSelected = false;
+        } 
+        animation[95].getChordData().getChord().rewind();
+    }
+    else if( animation[96].isSelected == true )
+    {
+        Chord relatedChord = animation[96].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[97].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[96].getChordData().getChord().play();
+            animation[96].isSelected = false;
+        } 
+        animation[96].getChordData().getChord().rewind();
+    }
+    else if( animation[97].isSelected == true )
+    {
+        Chord relatedChord = animation[97].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[98].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[97].getChordData().getChord().play();
+            animation[97].isSelected = false;
+        } 
+        animation[97].getChordData().getChord().rewind();
+    }
+    else if( animation[98].isSelected == true )
+    {
+        Chord relatedChord = animation[98].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            PImage imageToLoad = loadImage( animation[99].getImageName() );
+            image( imageToLoad, 0, 0 );
+            animation[98].getChordData().getChord().play();
+            animation[98].isSelected = false;
+        } 
+        animation[98].getChordData().getChord().rewind();
+    }
+    else if( animation[99].isSelected == true )
+    {
+        Chord relatedChord = animation[99].getChordData();
+        if( ( mouseX >= relatedChord.getX1Position() && mouseX <= relatedChord.getX2Position() && mouseY >= relatedChord.getY1Position() && mouseY <= relatedChord.getY2Position() )
+          || ( mouseX >= relatedChord.getX3Position() && mouseX <= relatedChord.getX4Position() && mouseY >= relatedChord.getY3Position() && mouseY <= relatedChord.getY4Position() ) )
+        {
+            animation[99].getChordData().getChord().play();
+            animation[99].isSelected = false;
+        }
+        animation[99].getChordData().getChord().rewind();
+    }
+}
+
+void initializeChords()
+{
+    chords[0] = new Chord( "C2", 7, 394, 42, 576, 43, 506, 66, 576, "C2.wav", minims[0] );
+    chords[1] = new Chord( "C2#", 43, 394, 83, 506, "C2#.wav", minims[1] );
+    chords[2] = new Chord( "D2", 83, 394, 111, 576, 67, 506, 128, 576, "D2.wav", minims[2] );
+    chords[3] = new Chord( "D2#", 112, 394, 151, 506, "D2#.wav", minims[3] );
+    chords[4] = new Chord( "E2", 151, 394, 187, 506, 129, 506, 189, 576, "E2.wav", minims[4] );
+    chords[5] = new Chord( "F2", 190, 394, 226, 506, 190, 506, 249, 576, "F2.wav", minims[5] );
+    chords[6] = new Chord( "F2#", 226, 394, 265, 506, "F2#.wav", minims[6] );
+    chords[7] = new Chord( "G2", 265, 394, 293, 506, 251, 506, 309, 576, "G2.wav", minims[7] );
+    chords[8] = new Chord( "G2#", 294, 394, 333, 506, "G2#.wav", minims[8] );
+    chords[9] = new Chord( "A2", 333, 394, 360, 506, 312, 506, 371, 576, "A2.wav", minims[9] );
+    chords[10] = new Chord( "A2#", 360, 394, 399, 506, "A2#.wav", minims[10] );
+    chords[11] = new Chord( "B2", 399, 394, 433, 506, 372, 506, 433, 576, "B2.wav", minims[11] );
+    chords[12] = new Chord( "C3", 434, 394, 470, 506, 434, 506, 493, 576, "C3.wav", minims[12] );
+    chords[13] = new Chord( "C3#", 471, 394, 510, 506, "C3#.wav", minims[13] );
+    chords[14] = new Chord( "D3", 511, 394, 538, 506, 495, 506, 555, 576, "D3.wav", minims[14] );
+    chords[15] = new Chord( "D3#", 538, 394, 578, 506, "D3#.wav", minims[15] );
+    chords[16] = new Chord( "E3", 545, 394, 616, 506, 556, 506, 616, 576, "E3.wav", minims[16] );
+}
+
+void initializeAnimation()
+{
+    animation[0] = new Animation( "1.png", chords[12] );
+    animation[1] = new Animation( "2.png", chords[12] );
+    animation[2] = new Animation( "3.png", chords[12] );
+    animation[3] = new Animation( "4.png", chords[11] );
+    animation[4] = new Animation( "5.png", chords[11] );
+    animation[5] = new Animation( "6.png", chords[11] );
+    animation[6] = new Animation( "7.png", chords[9] );
+    animation[7] = new Animation( "8.png", chords[11] );
+    animation[8] = new Animation( "9.png", chords[9] );
+    animation[9] = new Animation( "10.png", chords[4] );
+    
+    animation[10] = new Animation( "11.png", chords[9] );
+    animation[11] = new Animation( "12.png", chords[11] );
+    animation[12] = new Animation( "13.png", chords[9] );
+    animation[13] = new Animation( "14.png", chords[4] );
+    animation[14] = new Animation( "15.png", chords[7] );
+    animation[15] = new Animation( "16.png", chords[9] );
+    animation[16] = new Animation( "17.png", chords[11] );
+    animation[17] = new Animation( "18.png", chords[9] );
+    animation[18] = new Animation( "19.png", chords[5] );
+    
+    animation[19] = new Animation( "20.png", chords[2] );
+    animation[20] = new Animation( "21.png", chords[4] );
+    animation[21] = new Animation( "22.png", chords[5] );
+    animation[22] = new Animation( "23.png", chords[7] );
+    animation[23] = new Animation( "24.png", chords[9] );
+    animation[24] = new Animation( "25.png", chords[7] );
+    animation[25] = new Animation( "26.png", chords[2] );
+    animation[26] = new Animation( "27.png", chords[4] );
+    animation[27] = new Animation( "28.png", chords[5] );
+    animation[28] = new Animation( "29.png", chords[7] );
+    
+    animation[29] = new Animation( "30.png", chords[9] );
+    animation[30] = new Animation( "31.png", chords[9] );
+    animation[31] = new Animation( "32.png", chords[11] );
+    animation[32] = new Animation( "33.png", chords[7] );
+    animation[33] = new Animation( "34.png", chords[12] );
+    
+    animation[34] = new Animation( "35.png", chords[12] );
+    animation[35] = new Animation( "36.png", chords[12] );
+    animation[36] = new Animation( "37.png", chords[14] );
+    animation[37] = new Animation( "38.png", chords[12] );
+    animation[38] = new Animation( "39.png", chords[9] );
+    animation[39] = new Animation( "40.png", chords[12] );
+    animation[40] = new Animation( "41.png", chords[14] );
+    animation[41] = new Animation( "42.png", chords[12] );
+    
+    animation[42] = new Animation( "43.png", chords[11] );
+    animation[43] = new Animation( "44.png", chords[12] );
+    animation[44] = new Animation( "45.png", chords[11] );
+    animation[45] = new Animation( "46.png", chords[9] );
+    animation[46] = new Animation( "47.png", chords[7] );
+    animation[47] = new Animation( "48.png", chords[4] );
+    
+    animation[48] = new Animation( "49.png", chords[12] );
+    animation[49] = new Animation( "50.png", chords[12] );
+    animation[50] = new Animation( "51.png", chords[14] );
+    animation[51] = new Animation( "52.png", chords[12] );
+    animation[52] = new Animation( "53.png", chords[9] );
+    animation[53] = new Animation( "54.png", chords[12] );
+    animation[54] = new Animation( "55.png", chords[14] );
+    animation[55] = new Animation( "56.png", chords[12] );
+    
+    animation[56] = new Animation( "57.png", chords[7] );
+    animation[57] = new Animation( "58.png", chords[7] );
+    animation[58] = new Animation( "59.png", chords[7] );
+    animation[59] = new Animation( "60.png", chords[9] );
+    animation[60] = new Animation( "61.png", chords[9] );
+    animation[61] = new Animation( "62.png", chords[9] );
+    animation[62] = new Animation( "63.png", chords[11] );
+    animation[63] = new Animation( "64.png", chords[9] );
+    animation[64] = new Animation( "65.png", chords[7] );
+
+    animation[65] = new Animation( "66.png", chords[12] );
+    animation[66] = new Animation( "67.png", chords[12] );
+    animation[67] = new Animation( "68.png", chords[12] );
+    animation[68] = new Animation( "69.png", chords[11] );
+    animation[69] = new Animation( "70.png", chords[11] );
+    animation[70] = new Animation( "71.png", chords[11] );
+    
+    animation[71] = new Animation( "72.png", chords[9] );
+    animation[72] = new Animation( "73.png", chords[11] );
+    animation[73] = new Animation( "74.png", chords[9] );
+    animation[74] = new Animation( "75.png", chords[4] );
+    animation[75] = new Animation( "76.png", chords[9] );
+    animation[76] = new Animation( "77.png", chords[11] );
+    animation[77] = new Animation( "78.png", chords[9] );
+    animation[78] = new Animation( "79.png", chords[4] );
+    animation[79] = new Animation( "80.png", chords[7] );
+    animation[80] = new Animation( "81.png", chords[9] );
+    
+    animation[81] = new Animation( "82.png", chords[9] );
+    animation[82] = new Animation( "83.png", chords[12] );
+    animation[83] = new Animation( "84.png", chords[12] );
+    animation[84] = new Animation( "85.png", chords[14] );
+    animation[85] = new Animation( "86.png", chords[14] );
+    animation[86] = new Animation( "87.png", chords[12] );
+    animation[87] = new Animation( "88.png", chords[12] );
+    animation[88] = new Animation( "89.png", chords[7] );
+
+    animation[89] = new Animation( "90.png", chords[7] );
+    animation[90] = new Animation( "91.png", chords[12] );
+    animation[91] = new Animation( "92.png", chords[14] );
+    animation[92] = new Animation( "93.png", chords[12] );
+    
+    animation[93] = new Animation( "94.png", chords[12] );
+    animation[94] = new Animation( "95.png", chords[9] );
+    animation[95] = new Animation( "96.png", chords[11] );
+    animation[96] = new Animation( "97.png", chords[12] );
+    animation[97] = new Animation( "98.png", chords[14] );
+    animation[98] = new Animation( "99.png", chords[12] );
+    animation[99] = new Animation( "100.png", chords[16] );
+}

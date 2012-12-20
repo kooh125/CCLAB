@@ -1,0 +1,62 @@
+class Chord
+{
+    // holds name of the cord
+    String name;
+    // holds x1 position
+    int xPos1;
+    // holds y1 position
+    int yPos1;
+    // holds x2 position
+    int xPos2;
+    // holds y2 position
+    int yPos2;
+    // holds x3 position
+    int xPos3;
+    // holds y3 position
+    int yPos3;
+    // holds x4 position
+    int xPos4;
+    // holds y4 position
+    int yPos4;
+    
+    AudioPlayer chord;
+    
+    // constructor for sharp chords
+    public Chord( String nameIn, int x1, int y1, int x2, int y2, String nameOfFile, Minim m )
+    {
+        name = nameIn;
+        xPos1 = x1;
+        yPos1 = y1;
+        xPos2 = x2;
+        yPos2 = y2;
+        
+        chord = m.loadFile( nameOfFile );
+    }
+    
+    // constructor for regular chords
+    public Chord( String nameIn, int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4, String nameOfFile, Minim m )
+    {
+        name = nameIn;
+        xPos1 = x1;
+        yPos1 = y1;
+        xPos2 = x2;
+        yPos2 = y2;
+        xPos3 = x3;
+        yPos3 = y3;
+        xPos4 = x4;
+        yPos4 = y4;
+        
+        chord = m.loadFile( nameOfFile );
+    }
+    
+    public String getChordName() { return name; }
+    public int getX1Position() { return xPos1; }
+    public int getY1Position() { return yPos1; }
+    public int getX2Position() { return xPos2; }
+    public int getY2Position() { return yPos2; }
+    public int getX3Position() { return xPos3; }
+    public int getY3Position() { return yPos3; }
+    public int getX4Position() { return xPos4; }
+    public int getY4Position() { return yPos4; }
+    public AudioPlayer getChord() { return chord; }
+}

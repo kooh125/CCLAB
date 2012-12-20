@@ -1,0 +1,20 @@
+class Animation
+{
+    // holds the song
+    PImage imgFile;
+    String imageName;
+    Chord chordData;
+    Boolean isSelected;
+    
+    public Animation( String imgName, Chord chordIn )
+    {
+        imageName = imgName;
+        imgFile = loadImage( imageName );
+        chordData = chordIn;
+        isSelected = true;
+    }
+
+    public String getImageName() { return imageName; }
+    public PImage getAnimationImage() { return imgFile; }
+    public Chord getChordData() { return chordData; }
+}

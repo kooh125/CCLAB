@@ -1,0 +1,323 @@
+//libraries for touchosc
+import oscP5.*;
+import netP5.*;
+
+//libraries for music players
+import ddf.minim.*;
+import ddf.minim.signals.*;
+import ddf.minim.analysis.*;
+import ddf.minim.effects.*;
+
+OscP5 oscP5;
+
+//determines which code is clicked on iphone device
+int regClick = 8;
+int sharpClick = 6;
+
+//holds regular code sounds values
+float[] regClickVar = new float[regClick];
+//holds sharp code sounds values
+float[] sharpClickVar = new float[sharpClick];
+
+//holds regular code sounds minims
+Minim[] regMinims = new Minim[regClick];
+//holds regular code sounds
+AudioPlayer[] regPlayers = new AudioPlayer[regClick];
+//holds regular code names
+String[] regCodeNames = new String[regClick];
+
+//holds sharp code sounds minims
+Minim[] sharpMinims = new Minim[sharpClick];
+//holds sharp code sounds
+AudioPlayer[] sharpPlayers = new AudioPlayer[sharpClick];
+//holds sharp code names
+String[] sharpCodeNames = new String[sharpClick];
+
+void setup()
+{
+    //initializes screen size to be same as iphone
+    size(480, 320);
+    //setting the background color to black
+    background(0);
+    //initializing oscP5 controller (8000 - port number)
+    oscP5 = new OscP5(this, 8000);
+    
+    //initializes the code names
+    initializeCodeNames();
+    
+    //initializes minims and audio players for regular codes
+    for( int index1 = 0; index1 < regClick; index1++ )
+    {
+        regMinims[index1] = new Minim(this);
+        regPlayers[index1] = loadMusicFiles( regMinims[index1], regCodeNames[index1] );
+    }
+    //initializes minims and audio players for sharp codes
+    for( int index2 = 0; index2 < sharpClick; index2++ )
+    {
+        sharpMinims[index2] = new Minim(this);
+        sharpPlayers[index2] = loadMusicFiles( sharpMinims[index2], sharpCodeNames[index2] );
+    }
+}
+
+void initializeCodeNames()
+{
+    regCodeNames[0] = "C.wav";
+    regCodeNames[1] = "D.wav";
+    regCodeNames[2] = "E.wav";
+    regCodeNames[3] = "F.wav";
+    regCodeNames[4] = "G.wav";
+    regCodeNames[5] = "A.wav";
+    regCodeNames[6] = "B.wav";
+    regCodeNames[7] = "C2.wav";
+
+    sharpCodeNames[0] = "C#.wav";
+    sharpCodeNames[1] = "D#.wav";
+    sharpCodeNames[2] = "F#.wav";
+    sharpCodeNames[3] = "G#.wav";
+    sharpCodeNames[4] = "A#.wav";
+    sharpCodeNames[5] = "C2#.wav";    
+}
+
+//loads the music files using the code names and returns it.
+AudioPlayer loadMusicFiles( Minim m, String codeName )
+{
+    AudioPlayer code = code = m.loadFile( codeName );
+    return code;
+}
+
+void draw()
+{
+    //C
+    fill(110, 23, 20);
+    noStroke();
+    rect(0, 0, 59.12, 480);
+    /* if pressed on iphone, it will sync up with processing and it will
+    *  draw a rectangle with different color and plays the sound upto 200 milliseconds
+    */
+    if( regClickVar[0] == 1 )
+    {
+        fill(255, 41, 28);
+        rect(0, 0, 59.12, 470);
+        regPlayers[0].play(200);
+        regPlayers[0].rewind();
+    }
+    
+    //D
+    fill(110, 23, 20);
+    noStroke();
+    rect(60.12, 0, 59.12, 480);
+    /* if pressed on iphone, it will sync up with processing and it will
+    *  draw a rectangle with different color and plays the sound upto 200 milliseconds
+    */
+    if( regClickVar[1] == 1 )
+    {
+        fill(255, 41, 28);
+        rect(60.12, 0, 59.12, 480);
+        regPlayers[1].play(200);
+        regPlayers[1].rewind();
+    }
+    
+    //E
+    fill(110, 23, 20);
+    noStroke();
+    rect(120.24, 0, 59.12, 480);
+    /* if pressed on iphone, it will sync up with processing and it will
+    *  draw a rectangle with different color and plays the sound upto 200 milliseconds
+    */
+    if( regClickVar[2] == 1 )
+    {
+        fill(255, 41, 28);
+        rect(120.24, 0, 59.12, 480);
+        regPlayers[2].play(200);
+        regPlayers[2].rewind();
+    }
+    
+    //F
+    fill(110, 23, 20);
+    noStroke();
+    rect(180.36, 0, 59.12, 480);
+    /* if pressed on iphone, it will sync up with processing and it will
+    *  draw a rectangle with different color and plays the sound upto 200 milliseconds
+    */
+    if( regClickVar[3] == 1 )
+    {
+        fill(255, 41, 28);
+        rect(180.36, 0, 59.12, 480);
+        regPlayers[3].play(200);
+        regPlayers[3].rewind();
+    }
+    
+    //G
+    fill(110, 23, 20);
+    noStroke();
+    rect(240.48, 0, 59.12, 480);
+    /* if pressed on iphone, it will sync up with processing and it will
+    *  draw a rectangle with different color and plays the sound upto 200 milliseconds
+    */
+    if( regClickVar[4] == 1 )
+    {
+        fill(255, 41, 28);
+        rect(240.48, 0, 59.12, 480);
+        regPlayers[4].play(200);
+        regPlayers[4].rewind();
+    }
+    
+    //A
+    fill(110, 23, 20);
+    noStroke();
+    rect(300.6, 0, 59.12, 480);
+    /* if pressed on iphone, it will sync up with processing and it will
+    *  draw a rectangle with different color and plays the sound upto 200 milliseconds
+    */
+    if( regClickVar[5] == 1 )
+    {
+        fill(255, 41, 28);
+        rect(300.6, 0, 59.12, 480);
+        regPlayers[5].play(200);
+        regPlayers[5].rewind();
+    }
+  
+    //B
+    fill(110, 23, 20);
+    noStroke();
+    rect(360.72, 0, 59.12, 480);
+    /* if pressed on iphone, it will sync up with processing and it will
+    *  draw a rectangle with different color and plays the sound upto 200 milliseconds
+    */
+    if( regClickVar[6] == 1 )
+    {
+        fill(255, 41, 28);
+        rect(360.72, 0, 59.12, 480);
+        regPlayers[6].play(200);
+        regPlayers[6].rewind();
+    }
+    
+    //C2
+    fill(110, 23, 20);
+    noStroke();
+    rect(420.84, 0, 59.12, 480);
+    /* if pressed on iphone, it will sync up with processing and it will
+    *  draw a rectangle with different color and plays the sound upto 200 milliseconds
+    */
+    if( regClickVar[7] == 1 )
+    {
+        fill(255, 41, 28);
+        rect(420.84, 0, 59.12, 480);
+        regPlayers[7].play(200);
+        regPlayers[7].rewind();
+    }
+    
+    //C#
+    fill(15, 46, 41);
+    noStroke();
+    rect(40, 0, 40, 163);
+    /* if pressed on iphone, it will sync up with processing and it will
+    *  draw a rectangle with different color and plays the sound upto 200 milliseconds
+    */
+    if( sharpClickVar[0] == 1 )
+    {
+        fill(0, 196, 168);
+        rect(40, 0, 40, 163);
+        sharpPlayers[0].play(200);
+        sharpPlayers[0].rewind();
+    }
+    
+    //D#
+    fill(15, 46, 41);
+    noStroke();
+    rect(100, 0, 40, 163);
+    /* if pressed on iphone, it will sync up with processing and it will
+    *  draw a rectangle with different color and plays the sound upto 200 milliseconds
+    */
+    if( sharpClickVar[1] == 1 )
+    {
+        fill(0, 196, 168);
+        rect(100, 0, 40, 163);
+        sharpPlayers[1].play(200);
+        sharpPlayers[1].rewind();
+    }
+    
+    //F#
+    fill(15, 46, 41);
+    noStroke();
+    rect(220, 0, 40, 163);
+    /* if pressed on iphone, it will sync up with processing and it will
+    *  draw a rectangle with different color and plays the sound upto 200 milliseconds
+    */
+    if( sharpClickVar[2] == 1 )
+    {
+        fill(0, 196, 168);
+        rect(220, 0, 40, 163);
+        sharpPlayers[2].play(200);
+        sharpPlayers[2].rewind();
+    }
+    
+    //G#
+    fill(15, 46, 41);
+    noStroke();
+    rect(280, 0, 40, 163);
+    /* if pressed on iphone, it will sync up with processing and it will
+    *  draw a rectangle with different color and plays the sound upto 200 milliseconds
+    */
+    if( sharpClickVar[3] == 1 )
+    {
+        fill(0, 196, 168);
+        rect(280, 0, 40, 163);
+        sharpPlayers[3].play(200);
+        sharpPlayers[3].rewind();
+    }
+    
+    //A#
+    fill(15, 46, 41);
+    noStroke();
+    rect(340, 0, 40, 163);
+    /* if pressed on iphone, it will sync up with processing and it will
+    *  draw a rectangle with different color and plays the sound upto 200 milliseconds
+    */
+    if( sharpClickVar[4] == 1 )
+    {
+        fill(0, 196, 168);
+        rect(340, 0, 40, 163);
+        sharpPlayers[4].play(200);
+        sharpPlayers[4].rewind();
+    }
+    
+    //C2#
+    fill(15, 46, 41);
+    noStroke();
+    rect(460, 0, 20, 163);
+    /* if pressed on iphone, it will sync up with processing and it will
+    *  draw a rectangle with different color and plays the sound upto 200 milliseconds
+    */
+    if( sharpClickVar[5] == 1 )
+    {
+        fill(0, 196, 168);
+        rect(460, 0, 40, 163);
+        sharpPlayers[5].play(200);
+        sharpPlayers[5].rewind();
+    }
+}
+
+//osc event handler
+void oscEvent( OscMessage theOscMessage )
+{
+    String addr = theOscMessage.addrPattern();
+    float val = theOscMessage.get(0).floatValue();
+    
+    //based on iphone's pressed value, it will set click variable to val
+    if( addr.equals( "/1/C5" ) ) { regClickVar[0] = val; }
+    if( addr.equals( "/1/D5" ) ) { regClickVar[1] = val; }
+    if( addr.equals( "/1/E5" ) ) { regClickVar[2] = val; }
+    if( addr.equals( "/1/F5" ) ) { regClickVar[3] = val; }
+    if( addr.equals( "/1/G5" ) ) { regClickVar[4] = val; }
+    if( addr.equals( "/1/A5" ) ) { regClickVar[5] = val; }
+    if( addr.equals( "/1/B5" ) ) { regClickVar[6] = val; }
+    if( addr.equals( "/1/C6" ) ) { regClickVar[7] = val; }
+        
+    if( addr.equals( "/1/C5#" ) ) { sharpClickVar[0] = val; }
+    if( addr.equals( "/1/D5#" ) ) { sharpClickVar[1] = val; }
+    if( addr.equals( "/1/F5#" ) ) { sharpClickVar[2] = val; }
+    if( addr.equals( "/1/G5#" ) ) { sharpClickVar[3] = val; }
+    if( addr.equals( "/1/A5#" ) ) { sharpClickVar[4] = val; }
+    if( addr.equals( "/1/C6#" ) ) { sharpClickVar[5] = val; }
+}
